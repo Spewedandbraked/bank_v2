@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckRequest;
 use App\Models\Check;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,20 +34,10 @@ class CheckController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CheckRequest $request)
     {
-        //
-        $validatedData = $request->validate(
-            [
-                'cardName' => ['required', 'max:16'],
-            ],
-            [
-                'cardName.required' => 'Поле названия карточки обязательно!!!',
-                'cardName.max' => 'Поле название карточки не должно привышать 16 символов!!!',
-            ]
-        );
         Check::create([
-            'name' => $validatedData['cardName'],
+            'name' => $request->validated()['name'],
             'author' => Auth::id(),
         ]);
         return back()->withSuccess('IT WORKS!');
@@ -71,9 +62,12 @@ class CheckController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CheckRequest $request, string $id)
     {
-        //
+        $request->selectedCheck->fill($request->validated());
+        $request->selectedCheck->save();
+
+        return back()->withSuccess('IT WORKS!');
     }
 
     /**

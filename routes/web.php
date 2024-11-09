@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware(UserCheckAccess::class)->group(function () {
         Route::get('/moneybox/{selected?}', [CheckController::class, 'index'])->name('moneybox');
+        Route::post('/moneybox/{selected}', [CheckController::class, 'update'])->name('updateCheck');
         Route::delete('/moneyBox/destroy/{selected}', [CheckController::class, 'destroy'])->name('destroyCheck');
     });
 });

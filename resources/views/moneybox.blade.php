@@ -18,7 +18,7 @@
                 <form method="POST" action="{{ route('createCheck') }}" class="p-1">
                     @csrf
 
-                    <x-text-input name="cardName" class="block" />
+                    <x-text-input name="name" class="block" />
                     <x-primary-button :href="route('createCheck')"
                         onclick="event.preventDefault();
                                         this.closest('form').submit();">
@@ -52,25 +52,20 @@
                     <x-slot name="text">
                         {{ __('Перевести $$$') }}
                     </x-slot>
-                    <form method="POST" action="{{ route('createCheck') }}" class="p-1">
-                        @csrf
-
-                        <x-text-input name="cardName" class="block " />
-                        <x-primary-button :href="route('createCheck')"
-                            onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                            ==></x-primary-button>
-                    </form>
+                    <div>
+                        я реализую это после добавления друзей
+                    </div>
                 </x-menuButton>
                 <x-menuButton>
                     <x-slot name="text">
                         {{ __('Поменять данные') }}
                     </x-slot>
-                    <form method="POST" action="{{ route('createCheck') }}" class="p-1 flex flex-wrap">
+                    <form method="POST" action="{{ route('updateCheck', ['selected' => $selected['id']]) }}"
+                        class="p-1 flex flex-wrap">
                         @csrf
 
-                        <x-text-input name="cardName" class="block" />
-                        <x-primary-button :href="route('createCheck')"
+                        <x-text-input name="name" class="block" />
+                        <x-primary-button :href="route('updateCheck', ['selected' => $selected['id']])"
                             onclick="event.preventDefault();
                                             this.closest('form').submit();">
                             ЗАМЕНИТЬ НАЗВАНИЕ ==></x-primary-button>
