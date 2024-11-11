@@ -1,34 +1,18 @@
 <?php
 
 use App\Http\Controllers\CheckController;
+use App\Http\Controllers\FriendsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\UserCheckAccess;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-
-// заметка себе: если однажды будет нужда сделать демонстративную
-// главную страницу - я ее сделаю, но в моей (очевидно не адекватной)
-// голове ИДЕАЛЬНЫЙ сайт - тот, на котором сразу регистрацию в лицо пихают (типо вк!)
-// я добавлю ¨главную¨ страницу в будущем, если сочту необходимым повыпендриваться
-
-// на данный момент ¨главная страница¨ будет переадресовывться на другие маршруты
-
-//     return view('welcome');
-// });
-
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        // повезло - мидлварчик guest отправляет не абы куда, а в 
-        // name('dashboard')
-        // интересно где настраивается  этот редирект?
-
-        return view('dashboard');
-    })->name('dashboard');
-
     Route::post('/test', function () {
         dd($_REQUEST);
     })->name('test');
+
+    Route::get('/dashboard', [FriendsController::class, 'index'])->name('dashboard');
+    Route::post('/friend/add', [FriendsController::class, 'addFriend'])->name('addFriend');
 
     Route::get('/moneybox', [CheckController::class, 'index'])->name('moneybox');
     Route::post('/moneyBox/createNew', [CheckController::class, 'store'])->name('createCheck');
