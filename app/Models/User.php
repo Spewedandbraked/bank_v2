@@ -45,38 +45,21 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    function friendsPendingOfMine()
-    {
-        return $this->belongsToMany(self::class, 'friends', 'user_id', 'friend_id')
-            ->wherePivot('state', '=', 'pending')
-            ->withPivot('state');
-    }
-    function friendPendingOf()
-    {
-        return $this->belongsToMany(self::class, 'friends', 'friend_id', 'user_id')
-            ->wherePivot('state', '=', 'pending')
-            ->withPivot('state');
-    }
-    function mergePendingFriends()
-    {
-        return $this->friendsPendingOfMine->merge($this->friendPendingOf);
-    }
 
-    //я исправлю этот потом
-    function friendsAcceptedOfMine()
+    function friendsStatesOfMine()
     {
         return $this->belongsToMany(self::class, 'friends', 'user_id', 'friend_id')
-            ->wherePivot('state', '=', 'pester')
             ->withPivot('state');
     }
-    function friendAcceptedOf()
+    function friendStatesOf()
     {
         return $this->belongsToMany(self::class, 'friends', 'friend_id', 'user_id')
-            ->wherePivot('state', '=', 'pester')
             ->withPivot('state');
     }
-    function mergeAcceptedFriends()
+    function mergeStatesFriends()
     {
-        return $this->friendsPendingOfMine->merge($this->friendPendingOf);
+        return $this->friendsStatesOfMine->merge($this->friendStatesOf)
+            ->sortBy('pivot.state')
+            ->reverse();
     }
 }

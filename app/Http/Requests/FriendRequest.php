@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class FriendRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class FriendRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'exists:users,email'],
+            'email' => ['required', 'email', 'exists:users,email', 'not_in:'. Auth::user()->email],
         ];
     }
     public function messages(): array
@@ -30,7 +31,8 @@ class FriendRequest extends FormRequest
         return [
             'email.required' => 'Поле названия карточки обязательно!!!',
             'email.email' => 'это должен быть емеил....',
-            'email.exists' => 'Такого пользователя нет на сайте'
+            'email.exists' => 'Такого пользователя нет на сайте',
+            'email.not_in' => 'Вы должно быть кретин раз самому себе отправляете запрос в друзья',
         ];
     }
 }

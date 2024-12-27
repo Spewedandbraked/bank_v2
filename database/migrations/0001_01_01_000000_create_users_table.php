@@ -35,6 +35,19 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('friends', function (Blueprint $table) {
+            $table->id();
+
+            $table->unsignedBigInteger('friend_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('friend_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->string('state')->default('pending'); //pending|declined|accepded
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -45,5 +58,6 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('friends');
     }
 };

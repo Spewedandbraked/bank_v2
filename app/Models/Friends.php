@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Friends extends Model
 {
@@ -13,16 +12,16 @@ class Friends extends Model
 
 
 
-    public static function sendRequest($email)
+    function friendsStatesOfMine()
     {
-        return self::create([
-            'user_id' => Auth::user()->id,
-            'friend_id' => User::where('email', '=', $email)->first()['id'],
-        ]);
+        return $this->hasMany(self::class, 'user_id', 'friend_id');
     }
-    public function setPendingToPester()
+    function friendStatesOf()
     {
-        $this->state = 'pester';
-        return $this->save();
+        return $this->hasMany(self::class, 'friend_id', 'user_id');
+    }
+    function mergeStatesFriends()
+    {
+        return $this->friendsStatesOfMine->merge($this->friendStatesOf);
     }
 }

@@ -29,18 +29,42 @@
                 <span class='text-center'>Кореша:</span>
                 @isset($friends)
                     @foreach ($friends as $friend)
-                        <a href="{{ url('moneybox', ['selected' => $friend['email']]) }}" class="border-2 m-1 relative">
-                            <p class="text-lg">{{ $friend['name'] }}</p>
-                            <p class="text-md opacity-30">{{ $friend['email'] }}</p>
-                        </a>
-                    @endforeach
+                        @switch($friend->getOriginal('pivot_state'))
+                            @case('pending')
+                                <a href="{{ route('addFriend', ['selected' => $friend['email']]) }}" class="border-2 m-1 relative">
+                                    <p class="text-lg">{{ $friend['name'] }}</p>
+                                    <p class="text-md opacity-30">{{ $friend['email'] }}</p>
+                                    <form method="POST" action="{{ route('addFriend') }}" class="p-1">
+                                        @csrf
+                                        <input type="hidden" name="email" value="{{ $friend['email'] }}">
+                                        <button
+                                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                            <x-svg.AddFriend /></button>
+                                    </form>
+                                </a>
+                            @break
 
-                    {{-- @foreach ($pending as $element)
-                        <a href="{{ url('moneybox', ['selected' => $element['email']]) }}" class="border-2 m-1 relative">
-                            <p class="text-lg">{{ $element['name'] }}</p>
-                            <p class="text-md opacity-30">{{ $element['email'] }}</p>
-                        </a>
-                    @endforeach --}}
+                            @case('pester')
+                                <a href="{{ route('addFriend', ['selected' => $friend['email']]) }}"
+                                    class="border-2 m-1 relative border-success">
+                                    <p class="text-lg">{{ $friend['name'] }}</p>
+                                    <p class="text-md opacity-30">{{ $friend['email'] }}</p>
+                                </a>
+                            @break
+
+                            @case('declined')
+                                <a href="{{ route('addFriend', ['selected' => $friend['email']]) }}"
+                                    class="border-2 m-1 relative border-error">
+                                    <p class="text-lg">{{ $friend['name'] }}</p>
+                                    <p class="text-md opacity-30">{{ $friend['email'] }}</p>
+                                </a>
+                            @break
+
+                            @default
+                                дерьмо сломалось? - срочно скажите мне на spewedandbraked@gmail.com
+                        @endswitch
+                    @endforeach
                 @else
                     <div class="p-4 opacity-40">
                         {{ __('Корешей нет!') }}
