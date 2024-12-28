@@ -13,6 +13,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [FriendsController::class, 'index'])->name('dashboard');
     Route::post('/friend/add', [FriendsController::class, 'addFriend'])->name('addFriend');
+    Route::post('/friend/block', [FriendsController::class, 'blockFriend'])->name('blockFriend');
 
     Route::get('/moneybox', [CheckController::class, 'index'])->name('moneybox');
     Route::post('/moneyBox/createNew', [CheckController::class, 'store'])->name('createCheck');

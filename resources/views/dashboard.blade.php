@@ -31,7 +31,7 @@
                     @foreach ($friends as $friend)
                         @switch($friend->getOriginal('pivot_state'))
                             @case('pending')
-                                <a href="{{ route('addFriend', ['selected' => $friend['email']]) }}" class="border-2 m-1 relative">
+                                <a href="{{ route('test', ['selected' => $friend['email']]) }}" class="border-2 m-1 relative">
                                     <p class="text-lg">{{ $friend['name'] }}</p>
                                     <p class="text-md opacity-30">{{ $friend['email'] }}</p>
                                     <form method="POST" action="{{ route('addFriend') }}" class="p-1">
@@ -40,24 +40,48 @@
                                         <button
                                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                                            <x-svg.AddFriend /></button>
+                                            добавить друга</button>
+                                    </form>
+                                    <form method="POST" action="{{ route('blockFriend') }}" class="p-1">
+                                        @csrf
+                                        <input type="hidden" name="email" value="{{ $friend['email'] }}">
+                                        <button
+                                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                            удалить друга</button>
                                     </form>
                                 </a>
                             @break
 
                             @case('pester')
-                                <a href="{{ route('addFriend', ['selected' => $friend['email']]) }}"
+                                <a href="{{ route('test', ['selected' => $friend['email']]) }}"
                                     class="border-2 m-1 relative border-success">
                                     <p class="text-lg">{{ $friend['name'] }}</p>
                                     <p class="text-md opacity-30">{{ $friend['email'] }}</p>
+                                    <form method="POST" action="{{ route('blockFriend') }}" class="p-1">
+                                        @csrf
+                                        <input type="hidden" name="email" value="{{ $friend['email'] }}">
+                                        <button
+                                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                            удалить друга</button>
+                                    </form>
                                 </a>
                             @break
 
                             @case('declined')
-                                <a href="{{ route('addFriend', ['selected' => $friend['email']]) }}"
+                                <a href="{{ route('test', ['selected' => $friend['email']]) }}"
                                     class="border-2 m-1 relative border-error">
                                     <p class="text-lg">{{ $friend['name'] }}</p>
                                     <p class="text-md opacity-30">{{ $friend['email'] }}</p>
+                                    <form method="POST" action="{{ route('blockFriend') }}" class="p-1">
+                                        @csrf
+                                        <input type="hidden" name="email" value="{{ $friend['email'] }}">
+                                        <button
+                                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                            удалить друга</button>
+                                    </form>
                                 </a>
                             @break
 
