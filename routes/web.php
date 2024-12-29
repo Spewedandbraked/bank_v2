@@ -38,8 +38,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/moneyBox/destroy/{selected}', [CheckController::class, 'destroy'])->name('destroyCheck');
     });
     Route::middleware(UserFriendAccess::class)->group(function () {
-        Route::get('/friend/{selected?}', [FriendsController::class, 'index'])->name('viewUser');
-        // Route::post('/friend/{selected}', [FriendsController::class, 'update'])->name('updateCheck');
+        Route::get('/user/{selected?}', [FriendsController::class, 'index'])->name('viewUser');
+        // Route::post('/user/{selected}', [FriendsController::class, 'update'])->name('updateCheck');
     });
 });
 
