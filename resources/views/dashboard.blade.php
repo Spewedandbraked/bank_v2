@@ -5,28 +5,30 @@
         </h2>
     </x-slot>
 
-    <div class="flex flex-row">
-        <div class="relative m-1 h-min">
-            <x-anyMenu :z='10'>
-                <x-slot name="text">
-                    {{ __('ВВедите email кореша ') }}
-                </x-slot>
-                <x-slot name="svg">
-                    <x-svg.AddFriend />
-                </x-slot>
+    <div class="flex flex-col sm:flex-row">
+        <div class="relative border-2 w-full sm:max-w-80 border-user w-80 flex flex-col max-h-40 sm:max-h-fit">
+            <div class="absolute z-10 right-[-2px] top-[-2px]">
+                <x-anyMenu :z='10'>
+                    <x-slot name="text">
+                        {{ __('ВВедите email кореша ') }}
+                    </x-slot>
+                    <x-slot name="svg">
+                        <x-svg.AddFriend />
+                    </x-slot>
 
-                <form method="POST" action="{{ route('addFriend') }}" class="p-1">
-                    @csrf
+                    <form method="POST" action="{{ route('addFriend') }}" class="p-1">
+                        @csrf
 
-                    <x-text-input name="email" class="block" />
-                    <x-primary-button :href="route('addFriend')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        ==></x-primary-button>
-                </form>
-            </x-anyMenu>
-            <div class="border-2 border-user w-80 flex flex-col ">
-                <span class='text-center'>Кореша:</span>
+                        <x-text-input name="email" class="block" />
+                        <x-primary-button :href="route('addFriend')"
+                            onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                            ==></x-primary-button>
+                    </form>
+                </x-anyMenu>
+            </div>
+            <span class='text-center'>Кореша:</span>
+            <div class="flex flex-col overflow-scroll">
                 @isset($friends)
                     @foreach ($friends as $friend)
                         @switch($friend->getOriginal('pivot_state'))
@@ -64,10 +66,7 @@
                 @endisset
             </div>
         </div>
-        <div>
-
-        </div>
-        <div class="border-2 border-user w-screen m-1 relative">
+        <div class="border-2 border-user w-full mt-1 sm:m-1 relative">
             @isset($selectedUser)
                 @isset($selectedFriend)
                     <div class="absolute z-10 right-[-2px] top-[-2px]">
