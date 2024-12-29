@@ -4,6 +4,7 @@ use App\Http\Controllers\CheckController;
 use App\Http\Controllers\FriendsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\UserCheckAccess;
+use App\Http\Middleware\UserFriendAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -35,6 +36,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/moneybox/{selected?}', [CheckController::class, 'index'])->name('moneybox');
         Route::post('/moneybox/{selected}', [CheckController::class, 'update'])->name('updateCheck');
         Route::delete('/moneyBox/destroy/{selected}', [CheckController::class, 'destroy'])->name('destroyCheck');
+    });
+    Route::middleware(UserFriendAccess::class)->group(function () {
+        Route::get('/friend/{selected?}', [FriendsController::class, 'index'])->name('viewUser');
+        // Route::post('/friend/{selected}', [FriendsController::class, 'update'])->name('updateCheck');
     });
 });
 

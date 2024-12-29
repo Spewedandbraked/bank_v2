@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ *ПРОШУ ЗАМЕТИТЬ Check НЕ ВСМЫСЛЕ ПРОВЕРИТЬ А ВСМЫСЛЕ СЧЕТ!!!
+ */
 class UserCheckAccess
 {
     /**

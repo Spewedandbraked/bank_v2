@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FriendRequest;
 use App\Models\Friends;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FriendsController extends Controller
@@ -35,12 +36,15 @@ class FriendsController extends Controller
         }
         return back()->withErrors('что то не так. напишите мне на Spewedandbraked@gmail.com');
     }
-    public function index()
+    public function index(Request $request)
     {
         $friends = Auth::user()->mergeStatesFriends();
+        $friends->isEmpty() ? $friends = null : null; //плохое решение 
 
         return view('dashboard', [
             'friends' => $friends,
+            'selectedUser' => $request->selectedUser,       //информация о пользователе 
+            'selectedFriend' => $request->selectedFriend,   //информация о дружбе (не приходит если враг либо если еще не друзья)
         ]);
     }
     public function addFriend(FriendRequest $request)
@@ -60,6 +64,14 @@ class FriendsController extends Controller
             },
             //if declined
             function ($friendRecord, $takenUser) {
+                if ($friendRecord['user_id'] == Auth::user()->id) {
+                    $friendRecord->forceDelete();
+                    Friends::create([
+                        'user_id' => Auth::user()->id,
+                        'friend_id' => $takenUser['id'],
+                    ]);
+                    return back()->withSuccess('Блокировка удалена, запрос в друзья отправлен!');
+                }
                 return back()->withErrors('он передал вам 🖕');
             },
             //if already accepted (pester)
